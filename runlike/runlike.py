@@ -12,7 +12,7 @@ from inspector import Inspector
 @click.option("-p", "--pretty", is_flag=True, help="Pretty print")
 @click.option("-a", "--publish-all", is_flag=True, help="Publish all ports instead of currents")
 @click.option("-m", "--memory-limit", is_flag=True, help="Include container memory limit")
-def cli(container, no_name, pretty, publish_all):
+def cli(container, no_name, pretty, publish_all, memory_limit):
 
     # TODO: -i, -t, -d as added options that override the inspection
     ins = Inspector(container, no_name, pretty, publish_all, memory_limit)
