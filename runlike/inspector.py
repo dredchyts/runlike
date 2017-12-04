@@ -154,7 +154,7 @@ class Inspector(object):
 	else:
 	    self.options.append("--publish-all")
 	if self.memory_limit:
-	    memory = self.get_fact("HostConfig.Memory") or {}
+	    memory = self.get_fact("HostConfig.Memory")
 	    self.options.append("--memory=%s" % memory)
         self.parse_links()
         self.parse_restart()
