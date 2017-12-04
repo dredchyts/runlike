@@ -9,12 +9,13 @@ def die(message):
 
 class Inspector(object):
 
-    def __init__(self, container, no_name, pretty, publish_all):
+    def __init__(self, container, no_name, pretty, publish_all, memory_limit):
         self.container = container
         self.no_name = no_name
         self.output = ""
         self.pretty = pretty
 	self.publish_all = publish_all
+	self.memory_limit = memory_limit
         self.facts = None
         self.options = []
 
@@ -152,6 +153,9 @@ class Inspector(object):
             self.parse_ports()
 	else:
 	    self.options.append("--publish-all")
+	if self.memory_limit:
+	    memory = self.get_fact("HostConfig.Memory") or {}
+	    self.options.append("--memory=%s" % memory)
         self.parse_links()
         self.parse_restart()
         self.parse_devices()
