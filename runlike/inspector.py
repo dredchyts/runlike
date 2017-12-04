@@ -9,12 +9,12 @@ def die(message):
 
 class Inspector(object):
 
-    def __init__(self, container, no_name, pretty, publish):
+    def __init__(self, container, no_name, pretty, publish_all):
         self.container = container
         self.no_name = no_name
         self.output = ""
         self.pretty = pretty
-	self.publish = publish
+	self.publish_all = publish_all
         self.facts = None
         self.options = []
 
@@ -148,7 +148,7 @@ class Inspector(object):
         privileged = self.get_fact('HostConfig.Privileged')
         if privileged:
             self.options.append("--privileged")
-	if not self.publish:
+	if not self.publish_all:
             self.parse_ports()
 	else:
 	    self.options.append("--publish-all")
