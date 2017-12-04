@@ -155,7 +155,9 @@ class Inspector(object):
 	    self.options.append("--publish-all")
 	if self.memory_limit:
 	    memory = self.get_fact("HostConfig.Memory")
-	    self.options.append("--memory=%s" % memory)
+	    if memory != 0:
+	        memory = memory / 1048576
+                self.options.append('--memory="%sMB"' % memory)
         self.parse_links()
         self.parse_restart()
         self.parse_devices()
