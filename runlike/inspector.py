@@ -9,11 +9,13 @@ def die(message):
 
 class Inspector(object):
 
-    def __init__(self, container, no_name, pretty):
+    def __init__(self, container, no_name, pretty, publish_all, memory_limit):
         self.container = container
         self.no_name = no_name
         self.output = ""
         self.pretty = pretty
+	self.publish_all = publish_all
+	self.memory_limit = memory_limit
         self.facts = None
         self.options = []
 
@@ -47,7 +49,7 @@ class Inspector(object):
 
     def parse_hostname(self):
         hostname = self.get_fact("Config.Hostname")
-        self.options.append("--hostname=%s" % hostname)
+#        self.options.append("--hostname=%s" % hostname)
 
     def parse_ports(self):
         ports = self.get_fact("NetworkSettings.Ports") or {}
@@ -147,7 +149,15 @@ class Inspector(object):
         privileged = self.get_fact('HostConfig.Privileged')
         if privileged:
             self.options.append("--privileged")
-        self.parse_ports()
+	if not self.publish_all:
+            self.parse_ports()
+	else:
+	    self.options.append("--publish-all")
+	if self.memory_limit:
+	    memory = self.get_fact("HostConfig.Memory")
+	    if memory != 0:
+	        memory = memory / 1048576
+                self.options.append('--memory="%sMB"' % memory)
         self.parse_links()
         self.parse_restart()
         self.parse_devices()
